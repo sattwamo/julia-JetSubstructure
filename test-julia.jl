@@ -1,14 +1,12 @@
 using LorentzVectorHEP
-# using Plots
 using JetReconstruction
-# using Base.Threads
-# using StatsBase 
-
+using Plots
+using DelimitedFiles
 
 
 function readFile(file::Int64)
     # datafile = open("data.dat","r")
-    datafile = open("./allData/$(file).txt","r")
+    datafile = open("./total/$(file).txt","r")
     lines = readlines(datafile)
     close(datafile)
 
@@ -35,7 +33,9 @@ function loadParticles(lines::Array{String})
 end
 
 function makeJets(data::Vector{PseudoJet})
-    finaljets = @fastmath plain_jet_reconstruct(data; p = 0, R = 1.0)
+    # finaljets = plain_jet_reconstruct(data; p = 1, R = 1.0)
+    finaljets = jet_reconstruct(data; p = 1, R = 1.0, recombine = +, strategy = RecoStrategy.N2Tiled)
+
     finaljets
 end
 
@@ -93,7 +93,7 @@ function plotRAP(jets)
     
     for j in 1:NUM
         if 0 < jets[j].pt # < 20   
-            push!(rap, jets[j].rap)
+            push!(rap, jets[j].eta)
         end
     end
 
@@ -126,24 +126,38 @@ function plotPHI(jets)
 end
 
 function main()
-    @time fullData = readFile(0)
-    @time particles = loadParticles(fullData)
-    
-    
-    data = makeJets(particles)
-    hist = data.history
-    jets = data.jets
 
-    # println(hist)
-    # println(data.Qtot)
-    data = inclusive_jets(data)
-    # println(data[1])
-    displayJetData(data)
-    
-    # plotRAP(data)
-    # plotPHI(data)
-    # plotPT(data)
+
+    open("time_julia_tiled.dat", "w") do io
+        for i in 0:99
+            avgTime = 0.0
+            
+            for j in 1:100
+                global data
+                fullData = readFile(i)
+                particles = loadParticles(fullData)
+                
+                time_taken = @elapsed data = makeJets(particles)
+                hist = data.history
+                jets = data.jets
+                avgTime += time_taken
+                # println(hist)
+                # println(data.Qtot)
+                global data = inclusive_jets(data)
+            end
+
+            avgTime /= 100.0
+            println(i, "\t", avgTime)
+            writedlm(io, avgTime)
+                # println(data[1])
+                
+                # plotRAP(data)
+                # plotPHI(data)
+                # plotPT(data)
+            end
+        end
+    # displayJetData(data)
 end
 
 
-# main()
+main()

@@ -5,7 +5,7 @@ import numpy as np
 
 def readFile(number):
     # datafile = open(f"data.dat","r")
-    datafile = open(f"./allData/{number}.txt","r")
+    datafile = open(f"./total/{number}.txt","r")
     lines = datafile.readlines()
     datafile.close()
 
@@ -23,7 +23,7 @@ def loadParticles(lines):
     return event
 
 def makeJets(data):
-    jet_def = fj.JetDefinition(fj.cambridge_algorithm, 1.0)
+    jet_def = fj.JetDefinition(fj.kt_algorithm, 1.0, fj.Best, fj.E_scheme)
     jet_cluster = fj.ClusterSequence(data, jet_def)
     # jets = jet_cluster.inclusive_jets()
 
@@ -100,18 +100,35 @@ def plotPHI(jets):
     plt.hist(phi, bins=xrange)
     plt.show()
 
-file = readFile(0)
-particle_data = loadParticles(file)
-start = time.time()
-cluster = makeJets(particle_data)
-event = cluster.inclusive_jets()
-end = time.time() - start
-# print(totalJets(event))
-jetData(event)
-# print(end)
+with open("time_python.dat", "w") as FILE:
+
+    for i in range(100):
+        avgTime = 0.0
+        for j in range(100):
+            file = readFile(i)
+            particle_data = loadParticles(file)
+            
+            start = time.time()
+            cluster = makeJets(particle_data)
+            end = time.time() - start
+            avgTime += end
+
+        cluster = cluster.inclusive_jets(0.0)
+        
+        avgTime /= 100.0
+        print(i, "\t", avgTime, "\t", totalJets(cluster))
+        FILE.write(f"{avgTime}\n")
 
 
-# print(result)
-# plotRAP(event)
-# plotPHI(event)
-# plotPT(event)
+# event = cluster.inclusive_jets()
+        # print(totalJets(event))
+# jetData(event)
+        # print(end)
+
+
+        # print(result)
+        # plotRAP(event)
+    # plotPHI(event)
+    # plotPT(event)
+
+

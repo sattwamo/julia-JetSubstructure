@@ -1,0 +1,14 @@
+FileName,mean_particles,n_samples,time_per_event
+events-ee-Z.hepmc3,43.05,10,23.511751999999998
+events-ee-H.hepmc3,64.97,10,38.391138000000005
+events-pp-0.5TeV-5GeV.hepmc3,112.62,10,38.66231299999999
+events-pp-1TeV-5GeV.hepmc3,160.36,10,57.592409
+events-pp-2TeV-5GeV.hepmc3,188.21,10,77.554343
+events-pp-1TeV.hepmc3,226.98,10,108.551691
+events-pp-2TeV.hepmc3,226.98,10,108.85487400000001
+events-pp-5TeV-10GeV.hepmc3,284.15,10,135.449414
+events-pp-8TeV-20GeV.hepmc3,354.18,10,181.18996699999994
+events-pp-13TeV-20GeV.hepmc,431.18,10,238.03178599999995
+events-pp-20TeV-20GeV.hepmc3,524.59,10,297.44037399999996
+events-pp-20TeV-50GeV.hepmc3,553.64,10,334.891141
+events-pp-30TeV-50GeV.hepmc3,632.29,10,388.120207

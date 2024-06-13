@@ -1,0 +1,6 @@
+*.hepmc3
+*.gz
+
+# These files are just too big!
+events-AA-AuAu*
+events-AA-PbPb*
