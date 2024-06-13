@@ -2,7 +2,7 @@ import pyhepmc
 
 allEvent = []
 
-with pyhepmc.open(f"events.hepmc3", "r") as f:
+with pyhepmc.open(f"./total/events.hepmc3", "r") as f:
     for i, event in enumerate(f):
         print(i)
         allEvent.append(event)
